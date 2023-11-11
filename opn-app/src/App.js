@@ -1,11 +1,11 @@
 import LoginScreen from './components/LoginScreen';
 import MenuScreen from './components/MenuScreen';
+import ContabilizacaoScreen from './components/ContabilizacaoScreen';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './UserContext';
 import './App.css';
 
 const OpnTasks = () => <div>OPN Tasks Component</div>;
-const OpnContabilizacao = () => <div>OPN Contabilização Component</div>;
 
 function App() {
     return (
@@ -15,7 +15,7 @@ function App() {
                     <Route path="/" element={<LoginScreen />} />
                     <Route path="/menu" element={<MenuScreen />} />
                     <Route path="/tasks" element={<OpnTasks />} />
-                    <Route path="/contabilizacao" element={<OpnContabilizacao />} />
+                    <Route path="/contabilizacao" element={<ContabilizacaoScreen />} />
                 </Routes>
             </Router>
         </UserProvider>
