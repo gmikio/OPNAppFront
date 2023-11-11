@@ -55,6 +55,17 @@ const ContabilizacaoScreen = () => {
     const handleUserConfirmation = (confirm) => {
         setUserConfirmed(confirm);
         setIsEditing(!confirm); // Enable editing only if user denies confirmation
+        if (confirm) {
+            // Prepare fields for adding the product
+            setProductData({
+                ...productData,
+                productCode: productData.code,
+                supermarketId: '', // User needs to fill this
+                shiftId: '',       // User needs to fill this
+                amount: '',        // User needs to fill this
+                authorIdn: user.idn
+            });
+        }
     };
 
     // Function to handle form submit for Add, Edit, or Register
@@ -78,81 +89,42 @@ const ContabilizacaoScreen = () => {
     };
 
     // UI for product form
-const renderProductForm = () => {
-    if (productData || isEditing) {
-        return (
+    const renderProductForm = () => {
+        return productData ? (
             <Grow in={true}>
                 <Grid container spacing={2} style={{ padding: '20px', backgroundColor: 'lightgreen', borderRadius: '10px', marginTop: '20px' }}>
-                    <TextField
-                        label="Product Code"
-                        value={productData ? productData.code : ''}
-                        onChange={(e) => setProductData({ ...productData, code: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Product Name"
-                        value={productData ? productData.name : ''}
-                        onChange={(e) => setProductData({ ...productData, name: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Price"
-                        type="number"
-                        value={productData ? productData.price : ''}
-                        onChange={(e) => setProductData({ ...productData, price: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Measurement"
-                        type="number"
-                        value={productData ? productData.measurement : ''}
-                        onChange={(e) => setProductData({ ...productData, measurement: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Brand"
-                        value={productData ? productData.brand : ''}
-                        onChange={(e) => setProductData({ ...productData, brand: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Amount"
-                        type="number"
-                        value={productData ? productData.amount : ''}
-                        onChange={(e) => setProductData({ ...productData, amount: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Unit"
-                        type="number"
-                        value={productData ? productData.unit : ''}
-                        onChange={(e) => setProductData({ ...productData, unit: e.target.value })}
-                        disabled={!isEditing}
-                        fullWidth
-                    />
-                    {!userConfirmed && (
+                    {/* Always display the product details */}
+                    <TextField label="Product Code" value={productData.code || ''} disabled fullWidth />
+                    <TextField label="Product Name" value={productData.name || ''} disabled fullWidth />
+                    <TextField label="Price" type="number" value={productData.price || ''} disabled fullWidth />
+                    <TextField label="Measurement" type="number" value={productData.measurement || ''} disabled fullWidth />
+                    <TextField label="Brand" value={productData.brand || ''} disabled fullWidth />
+                    <TextField label="Unit" type="number" value={productData.unit || ''} disabled fullWidth />
+                    
+                    {/* Conditional rendering for user confirmed case */}
+                    {userConfirmed && (
                         <>
-                            <Button onClick={() => handleUserConfirmation(true)}  variant="contained" color="secondary" style={{ backgroundColor: 'green', margin: '10px' }}>Confirmar Produto</Button>
-                            <Button onClick={() => handleUserConfirmation(false)} variant="contained" color="secondary" style={{ backgroundColor: 'red', margin: '10px' }}>Editar Produto</Button>
+                            <TextField label="Supermarket ID" value={productData.supermarketId || ''} onChange={(e) => setProductData({ ...productData, supermarketId: e.target.value })} fullWidth />
+                            <TextField label="Shift ID" value={productData.shiftId || ''} onChange={(e) => setProductData({ ...productData, shiftId: e.target.value })} fullWidth />
+                            <TextField label="Amount" type="number" value={productData.amount || ''} onChange={(e) => setProductData({ ...productData, amount: e.target.value })} fullWidth />
+                            <Button variant="contained" color="secondary" onClick={handleProductSubmit} style={{ backgroundColor: 'red', marginTop: '10px' }}>
+                                Add Product
+                            </Button>
                         </>
                     )}
-                    {isEditing && (
-                        <Button variant="contained" color="secondary" onClick={handleProductSubmit} style={{ backgroundColor: 'red', marginTop: '10px' }}>
-                            {isEditing && !userConfirmed ? 'Registrar Produto' : 'Editar Produto'}
-                        </Button>
+
+                    {/* Conditional rendering for editing case */}
+                    {!userConfirmed && isEditing && (
+                        <>
+                            <Button onClick={() => handleUserConfirmation(false)} variant="contained" color="secondary" style={{ backgroundColor: 'red', margin: '10px' }}>
+                                Não é esse o produto
+                            </Button>
+                        </>
                     )}
                 </Grid>
             </Grow>
-        );
-    }
-    return null;
-};
+        ) : null;
+    };
 
     return (
         <Container>
