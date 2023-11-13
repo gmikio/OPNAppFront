@@ -15,6 +15,7 @@ export const checkProduct = async (barcode) => {
 };
 
 export const addProduct = async (productDetails) => {
+    console.log('productDetails:', productDetails)
     try {
         const response = await fetch(`http://opn-contabilizacao-env.eba-wnru99in.us-east-1.elasticbeanstalk.com/api/product/Add`, {
             method: 'POST',
@@ -32,6 +33,7 @@ export const addProduct = async (productDetails) => {
 
 export const editProduct = async (productDetails) => {
     try {
+        console.log('productDetails dentro da api call:', productDetails)
         const response = await fetch(`http://opn-contabilizacao-env.eba-wnru99in.us-east-1.elasticbeanstalk.com/api/product/Edit`, {
             method: 'PUT',
             headers: {
@@ -42,11 +44,13 @@ export const editProduct = async (productDetails) => {
         return response;
     } catch (error) {
         console.error('Error editing product:', error);
+        console.log('Error editing product:', error);
         throw error;
     }
 };
 
 export const registerProduct = async (productDetails) => {
+    console.log('productDetails:', productDetails)
     try {
         const response = await fetch(`http://opn-contabilizacao-env.eba-wnru99in.us-east-1.elasticbeanstalk.com/api/product/Register`, {
             method: 'POST',
@@ -58,6 +62,7 @@ export const registerProduct = async (productDetails) => {
         return response;
     } catch (error) {
         console.error('Error registering product:', error);
+        console.log('Error registering product:', error);
         throw error;
     }
 };
