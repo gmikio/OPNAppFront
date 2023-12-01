@@ -11,22 +11,27 @@ const LoginScreen = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default form submission behavior
+        console.log('Attempting login with:', { name, idn }); // Log attempt
+
         try {
             const response = await fetch(`http://opn-contabilizacao-env.eba-wnru99in.us-east-1.elasticbeanstalk.com/api/User/Login/?idn=${idn}&name=${name}`);
+            console.log('Response status:', response.status); // Log response status
+
             if (response.status === 200) {
                 // Set user context here
-                console.log('Name:', name);
-                console.log('IDN:', idn);
+                console.log('Login successful for:', { name, idn });
                 setUser({ name, idn });
                 navigate('/menu', { state: { userName: name, userIdn: idn } });
             } else {
                 // Handle login error
+                console.error('Login failed:', response.statusText); // Log error message
+                // Implement more specific error handling if necessary
             }
         } catch (error) {
             // Handle request error
+            console.error('Error during login request:', error); // Log error details
+            // Implement additional error handling logic if needed
         }
-
-        // Add API call for authentication here
     };
 
     return (
