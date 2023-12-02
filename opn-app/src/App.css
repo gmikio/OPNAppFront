@@ -41,3 +41,17 @@
     margin-bottom: 20px;
     margin-top: 20px;
 }
+
+/* Ajuste para evitar a sobreposição de títulos */
+.MuiFormControl-root {
+  margin-top: 16px;
+}
+
+.MuiInputLabel-formControl {
+  background-color: #fff; /* ou a cor do seu fundo de formulário */
+  padding: 0 4px; /* pequeno preenchimento para evitar que o texto grude nas bordas */
+}
+
+.MuiInputLabel-shrink {
+  transform: translate(14px, -6px) scale(0.75); /* ajuste na transformação para evitar sobreposição */
+}

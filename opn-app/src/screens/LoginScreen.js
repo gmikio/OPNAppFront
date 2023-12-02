@@ -1,36 +1,31 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../UserContext'; // Adjust the import path as needed
-import { TextField, Button, Container, Typography } from '@mui/material';
+import { UserContext } from '../UserContext';
+import { TextField, Button, Container, Typography, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../api/authApi';
 
 const LoginScreen = () => {
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [idn, setIdn] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission behavior
-        console.log('Attempting login with:', { name, idn }); // Log attempt
-
+        event.preventDefault();
         try {
-            const response = await fetch(`http://opn-contabilizacao-env.eba-wnru99in.us-east-1.elasticbeanstalk.com/api/User/Login/?idn=${idn}&name=${name}`);
-            console.log('Response status:', response.status); // Log response status
-
-            if (response.status === 200) {
-                // Set user context here
-                console.log('Login successful for:', { name, idn });
+            const { status, data } = await loginUser(idn, name);
+            if (status === 200) {
                 setUser({ name, idn });
                 navigate('/menu', { state: { userName: name, userIdn: idn } });
             } else {
-                // Handle login error
-                console.error('Login failed:', response.statusText); // Log error message
-                // Implement more specific error handling if necessary
+                setSnackbarMessage('Erro no login: ' + data.message);
+                setSnackbarOpen(true);
             }
         } catch (error) {
-            // Handle request error
-            console.error('Error during login request:', error); // Log error details
-            // Implement additional error handling logic if needed
+            setSnackbarMessage('Falha na conexão com o servidor.');
+            setSnackbarOpen(true);
         }
     };
 
@@ -46,7 +41,7 @@ const LoginScreen = () => {
                 required
                 fullWidth
                 id="name"
-                label="Name"
+                label="Nome"
                 name="name"
                 autoComplete="name"
                 autoFocus
@@ -71,9 +66,15 @@ const LoginScreen = () => {
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
+                style={{ marginTop: '10px' }}
             >
                 Sign In
             </Button>
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+                <Alert onClose={() => setSnackbarOpen(false)} severity="error">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

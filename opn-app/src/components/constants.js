@@ -8,9 +8,11 @@ export const unitEnum = {
 };
 
 export const supermarketIdEnum = {
-    "Bandeirantes": 1,
-    "Ponte Preta": 2,
-    "Souzas": 3,
-    "Guará": 4,
-    "São Vicente": 5
+    "Antonio Hossori": 1,
+    "Gabriel Porta": 2,
+    "Macedo Soares": 3,
+    "Romeu Tortima": 4,
+    "Profesosor": 5,
+    "Roxo": 6,
+    "Paulo": 7,
 };

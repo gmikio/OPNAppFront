@@ -1,11 +1,10 @@
-import LoginScreen from './components/LoginScreen';
-import MenuScreen from './components/MenuScreen';
-import ContabilizacaoScreen from './components/ContabilizacaoScreen';
+import LoginScreen from './screens/LoginScreen';
+import MenuScreen from './screens/MenuScreen';
+import ContabilizacaoScreen from './screens/ContabilizacaoScreen';
+import TasksScreen from './screens/TasksScreen';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './UserContext';
 import './App.css';
-
-const OpnTasks = () => <div>OPN Tasks Component</div>;
 
 function App() {
     return (
@@ -14,7 +13,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<LoginScreen />} />
                     <Route path="/menu" element={<MenuScreen />} />
-                    <Route path="/tasks" element={<OpnTasks />} />
+                    <Route path="/tasks" element={<TasksScreen />} />
                     <Route path="/contabilizacao" element={<ContabilizacaoScreen />} />
                 </Routes>
             </Router>
